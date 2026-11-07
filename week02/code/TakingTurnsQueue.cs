@@ -40,18 +40,20 @@ public class TakingTurnsQueue
         else
         {
             Person person = _people.Dequeue();
-            if (person.Turns > 1)
+
+            // If turns are 0 or less, they have infinite turns -> put them back in!
+            if (person.Turns <= 0)
+            {
+                _people.Enqueue(person);
+            }
+            // If they have more than 1 turn left, subtract 1 and put them back in.
+            else if (person.Turns > 1)
             {
                 person.Turns -= 1;
                 _people.Enqueue(person);
             }
+            // If turns == 1, they are on their last turn, so we just let them leave (do not re-enqueue).
 
             return person;
         }
-    }
-
-    public override string ToString()
-    {
-        return _people.ToString();
-    }
-}
+    }}
